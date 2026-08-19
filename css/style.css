@@ -1,0 +1,3848 @@
+/* ===================================================
+   PROYECTO: DEDICATORIA
+   Archivo: style.css
+=================================================== */
+
+
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   BASE
+========================= */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    color: #ffffff;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #050505 0%,
+            #050505 25%,
+            #100304 50%,
+            #260507 100%
+        );
+
+}
+
+
+/* =========================
+   APP
+========================= */
+
+.app {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+}
+
+
+/* =========================
+   PANTALLAS
+========================= */
+
+.screen {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================
+   LECTOR
+========================= */
+
+#fingerprint-screen {
+
+    background: transparent;
+
+}
+
+
+.fingerprint-container {
+
+    width: min(88%, 420px);
+
+    padding:
+    24px
+    max(16px, env(safe-area-inset-right))
+    24px
+    max(16px, env(safe-area-inset-left));
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* =========================
+   TEXTOS
+========================= */
+
+.eyebrow {
+    margin-bottom: 18px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: 4px;
+
+    color: rgba(255, 255, 255, 0.55);
+}
+
+
+.fingerprint-container h1 {
+    font-size: clamp(28px, 7vw, 40px);
+    font-weight: 300;
+
+    margin-bottom: 12px;
+}
+
+
+.instruction {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.55);
+
+    margin-bottom: 45px;
+}
+
+
+/* =========================
+   BOTÓN HUELLA
+========================= */
+
+.fingerprint-button {
+
+    width: 190px;
+    height: 190px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+
+    position: relative;
+
+    touch-action: manipulation;
+}
+
+
+.fingerprint-button::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    transition:
+    transform 0.5s ease,
+    border-color 0.5s ease;
+}
+
+
+.fingerprint-button:active::before {
+
+    transform: scale(0.92);
+
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* =========================
+   HUELLA DIGITAL
+========================= */
+
+.fingerprint-svg {
+
+    width: 125px;
+    height: 150px;
+
+    display: block;
+
+    fill: none;
+
+    stroke: rgba(255, 255, 255, 0.72);
+
+    stroke-width: 2.2;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    transition:
+    stroke 0.4s ease,
+    filter 0.4s ease,
+    transform 0.4s ease;
+}
+
+
+/* =========================
+   ANIMACIÓN DE ESPERA
+========================= */
+
+.fingerprint-button:not(.scanning) .fingerprint-svg {
+
+    animation: fingerprint-breathe 3s ease-in-out infinite;
+}
+
+
+@keyframes fingerprint-breathe {
+
+    0%,
+    100% {
+
+        opacity: 0.65;
+
+        transform: scale(1);
+    }
+
+    50% {
+
+        opacity: 1;
+
+        transform: scale(1.025);
+    }
+}
+
+
+/* =========================
+   ESTADO ACTIVO
+========================= */
+
+.fingerprint-button:active .fingerprint-svg {
+
+    transform: scale(0.96);
+}
+
+
+/* =========================
+   ESCANEANDO
+========================= */
+
+.fingerprint-button.scanning .fingerprint-svg {
+
+    stroke: #ffffff;
+
+    opacity: 1;
+
+    filter:
+    drop-shadow(0 0 5px rgba(255,255,255,0.35));
+}
+
+
+/* =========================
+   LÍNEA DE ESCANEO
+========================= */
+
+.scan-line {
+
+    position: absolute;
+
+    left: 35px;
+    right: 35px;
+
+    top: 30px;
+
+    height: 2px;
+
+    background: rgba(255,255,255,0);
+
+    box-shadow:
+    0 0 0 rgba(255,255,255,0);
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+.fingerprint-button.scanning .scan-line {
+
+    opacity: 1;
+
+    background: rgba(255,255,255,0.85);
+
+    box-shadow:
+    0 0 8px rgba(255,255,255,0.6);
+
+    animation: fingerprint-scan 1.5s ease-in-out infinite;
+}
+
+
+@keyframes fingerprint-scan {
+
+    0% {
+
+        top: 28px;
+
+        opacity: 0;
+    }
+
+    10% {
+
+        opacity: 1;
+    }
+
+    50% {
+
+        top: 158px;
+
+        opacity: 1;
+    }
+
+    90% {
+
+        opacity: 1;
+    }
+
+    100% {
+
+        top: 28px;
+
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   ESTADO
+========================= */
+
+.status {
+
+    margin-top: 35px;
+
+    font-size: 13px;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    min-height: 20px;
+}
+
+
+/* =========================
+   PROGRESO
+========================= */
+
+.progress-container {
+
+    width: 180px;
+    height: 2px;
+
+    margin-top: 18px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    overflow: hidden;
+}
+
+
+.progress-bar {
+
+    width: 0%;
+    height: 100%;
+
+    background: #ffffff;
+
+    transition: width 0.15s linear;
+}
+
+
+.percentage {
+
+    margin-top: 9px;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.35);
+}
+
+
+/* =========================
+   VERIFICADO
+========================= */
+
+#verified-screen {
+
+    background:
+    radial-gradient(
+        circle at center,
+        #171717 0%,
+        #070707 55%,
+        #020202 100%
+    );
+}
+
+
+.verified-container {
+
+    width: min(90%, 420px);
+
+    text-align: center;
+}
+
+
+.check {
+
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 35px;
+
+    background: rgba(40, 150, 75, 0.85);
+
+    border: 1px solid rgba(255, 255, 255, 0.4);
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+
+    animation: check-appear 0.8s ease forwards;
+}
+
+
+@keyframes check-appear {
+
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.verified-container h1 {
+
+    font-size: clamp(28px, 7vw, 38px);
+
+    font-weight: 300;
+
+    margin-bottom: 18px;
+}
+
+
+.verified-container p:not(.eyebrow) {
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    margin-bottom: 35px;
+}
+
+
+/* =========================
+   BOTÓN CONTINUAR
+========================= */
+
+.continue-button {
+
+    padding: 14px 30px;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    cursor: pointer;
+
+    transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+
+.continue-button:hover {
+
+    background: #ffffff;
+
+    color: #000000;
+}
+
+/* =========================
+   PANTALLA DE TRANSICIÓN
+========================= */
+
+#transition-screen {
+
+    background: transparent;
+
+}
+
+
+.transition-container {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+/* =========================
+   MOVIMIENTO DE CÁMARA
+========================= */
+
+.transition-container.camera-test .camera-content {
+
+    transform: translateY(600px);
+
+}
+
+/* =========================
+   CONTENIDO DE CÁMARA
+========================= */
+
+.camera-content {
+
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        transform 4s ease-in-out;
+
+}
+/* =========================
+   LUZ DE APARICIÓN
+========================= */
+
+.reveal-light {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 700px;
+    height: 700px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(255,255,255,0.95) 0%,
+        rgba(255,255,255,0.70) 8%,
+        rgba(255,255,255,0.35) 20%,
+        rgba(255,255,255,0.15) 35%,
+        rgba(255,255,255,0.05) 50%,
+        rgba(255,255,255,0) 72%
+    );
+
+    filter: blur(8px);
+
+    transform:
+    translate(-50%, -50%)
+    scale(0.08);
+
+    z-index: 1;
+
+    will-change: transform, opacity;
+}
+
+
+.reveal-light.show {
+
+    animation:
+    reveal-light-animation 3.5s ease-out forwards;
+
+}
+
+
+@keyframes reveal-light-animation {
+
+    0% {
+        opacity: 0;
+        transform:
+        translate(-50%, -50%)
+        scale(0.08);
+    }
+
+    5% {
+        opacity: 0.55;
+        transform:
+        translate(-50%, -50%)
+        scale(0.11);
+    }
+
+    10% {
+        opacity: 0.90;
+        transform:
+        translate(-50%, -50%)
+        scale(0.16);
+    }
+
+    15% {
+        opacity: 1;
+        transform:
+        translate(-50%, -50%)
+        scale(0.21);
+    }
+
+    20% {
+        opacity: 1;
+        transform:
+        translate(-50%, -50%)
+        scale(0.27);
+    }
+
+    25% {
+        opacity: 0.98;
+        transform:
+        translate(-50%, -50%)
+        scale(0.33);
+    }
+
+    30% {
+        opacity: 0.95;
+        transform:
+        translate(-50%, -50%)
+        scale(0.40);
+    }
+
+    35% {
+        opacity: 0.91;
+        transform:
+        translate(-50%, -50%)
+        scale(0.47);
+    }
+
+    40% {
+        opacity: 0.86;
+        transform:
+        translate(-50%, -50%)
+        scale(0.54);
+    }
+
+    45% {
+        opacity: 0.81;
+        transform:
+        translate(-50%, -50%)
+        scale(0.60);
+    }
+
+    50% {
+        opacity: 0.76;
+        transform:
+        translate(-50%, -50%)
+        scale(0.66);
+    }
+
+    55% {
+        opacity: 0.70;
+        transform:
+        translate(-50%, -50%)
+        scale(0.72);
+    }
+
+    60% {
+        opacity: 0.64;
+        transform:
+        translate(-50%, -50%)
+        scale(0.78);
+    }
+
+    65% {
+        opacity: 0.57;
+        transform:
+        translate(-50%, -50%)
+        scale(0.84);
+    }
+
+    70% {
+        opacity: 0.50;
+        transform:
+        translate(-50%, -50%)
+        scale(0.90);
+    }
+
+    75% {
+        opacity: 0.42;
+        transform:
+        translate(-50%, -50%)
+        scale(0.96);
+    }
+
+    80% {
+        opacity: 0.34;
+        transform:
+        translate(-50%, -50%)
+        scale(1.02);
+    }
+
+    85% {
+        opacity: 0.26;
+        transform:
+        translate(-50%, -50%)
+        scale(1.09);
+    }
+
+    90% {
+        opacity: 0.18;
+        transform:
+        translate(-50%, -50%)
+        scale(1.17);
+    }
+
+    95% {
+        opacity: 0.08;
+        transform:
+        translate(-50%, -50%)
+        scale(1.25);
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+        translate(-50%, -50%)
+        scale(1.32);
+    }
+
+}
+
+/* =========================
+   REGALO
+========================= */
+
+.gift {
+
+    position: relative;
+
+    z-index: 10;
+
+    width: 190px;
+    height: 190px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+
+    transform:
+    translateY(20px)
+    scale(0.92);
+
+    transition:
+    opacity 1.2s ease,
+    transform 1.2s ease;
+
+}
+
+.gift.show {
+
+    opacity: 1;
+
+    animation:
+    gift-materialize 1.2s ease-out forwards;
+
+}
+
+/* =========================
+   CAJA ANTES DE ABRIR
+========================= */
+
+.gift.shake .gift-box {
+    animation: gift-shake 0.8s ease-in-out forwards;
+}
+
+/* =========================
+   RESPLANDOR
+========================= */
+
+.gift-glow {
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    border-radius: 50%;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(255,255,255,0.10) 0%,
+        rgba(255,255,255,0.04) 35%,
+        rgba(255,255,255,0) 70%
+    );
+
+    filter: blur(8px);
+
+    animation:
+    gift-glow 3s ease-in-out infinite;
+
+}
+
+
+/* =========================
+   CAJA
+========================= */
+
+.gift-box {
+
+    position: relative;
+
+    width: 120px;
+    height: 105px;
+
+    margin-top: 25px;
+
+    perspective: 500px;
+
+    filter:
+    drop-shadow(0 18px 20px rgba(0,0,0,0.55));
+
+}
+
+/* =========================
+   LUZ INTERIOR DE LA CAJA
+========================= */
+
+.gift-inner-glow {
+
+    position: absolute;
+
+    left: 50%;
+    top: -12px;
+
+    width: 90px;
+    height: 115px;
+
+    transform:
+        translateX(-50%)
+        scale(0.2);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255,255,255,1) 0%,
+            rgba(255,245,190,0.85) 22%,
+            rgba(255,220,100,0.50) 45%,
+            rgba(255,180,50,0) 78%
+        );
+
+    filter: blur(8px);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 3;
+}
+
+/* =========================
+   BASE — ROJO VINO
+========================= */
+
+.gift-base {
+
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 120px;
+    height: 82px;
+
+    z-index: 2;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8e1b2b 0%,
+            #6b0f1a 38%,
+            #4a0912 70%,
+            #28050a 100%
+        );
+
+    border:
+        1px solid
+        rgba(180, 80, 90, 0.45);
+
+    border-radius: 7px;
+
+    box-shadow:
+
+        inset 0 2px 0
+        rgba(255,255,255,0.12),
+
+        inset 10px 0 20px
+        rgba(255,80,90,0.08),
+
+        inset -12px 0 22px
+        rgba(0,0,0,0.40),
+
+        0 18px 35px
+        rgba(0,0,0,0.75);
+
+}
+
+/* =========================
+   LISTÓN VERTICAL
+========================= */
+
+.gift-ribbon.vertical {
+
+    position: absolute;
+
+    top: 23px;
+    bottom: 0;
+
+    left: 50%;
+
+    width: 16px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 5;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7a5a12 0%,
+            #c9a227 25%,
+            #f6d77a 45%,
+            #c9a227 65%,
+            #7a5a12 100%
+        );
+
+    box-shadow:
+        0 0 6px rgba(201,162,39,0.20);
+
+}
+
+/* =========================
+   LISTÓN HORIZONTAL
+========================= */
+
+.gift-ribbon.horizontal {
+
+    position: absolute;
+
+    left: -1px;
+    right: -1px;
+
+    top: 50px;
+
+    height: 15px;
+
+    z-index: 5;
+
+    background:
+    linear-gradient(
+        180deg,
+        #7a5a12 0%,
+        #c9a227 25%,
+        #f6d77a 45%,
+        #c9a227 65%,
+        #7a5a12 100%
+    );
+
+    box-shadow:
+    0 0 6px rgba(201,162,39,0.20);
+
+}
+
+
+/* =========================
+   TAPA
+========================= */
+
+.gift-lid {
+
+    position: absolute;
+
+    left: -6px;
+    top: -3px;
+
+    width: 132px;
+    height: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8e1b2b 0%,
+            #6b0f1a 40%,
+            #430810 75%,
+            #260509 100%
+        );
+
+    border:
+        1px solid
+        rgba(180, 80, 90, 0.50);
+
+    border-radius: 6px;
+
+    box-shadow:
+
+        inset 0 2px 0
+        rgba(255,255,255,0.13),
+
+        inset 0 -5px 10px
+        rgba(0,0,0,0.28),
+
+        0 8px 15px
+        rgba(0,0,0,0.55);
+
+}
+
+
+/* =========================
+   LISTÓN DE LA TAPA
+========================= */
+
+.gift-lid .gift-ribbon.vertical {
+
+    position: absolute;
+
+    top: -1px;
+    bottom: -1px;
+
+    left: 50%;
+
+    width: 16px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        linear-gradient(
+            90deg,
+            #7a5a12 0%,
+            #c9a227 25%,
+            #f6d77a 45%,
+            #c9a227 65%,
+            #7a5a12 100%
+        );
+
+    box-shadow:
+        0 0 6px
+        rgba(201,162,39,0.20);
+
+}
+
+/* =========================
+   MOÑO DEL REGALO
+========================= */
+
+.gift-lid::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: -18px;
+
+    width: 34px;
+    height: 18px;
+
+    transform:
+        translateX(-100%)
+        rotate(-8deg);
+
+    background:
+        linear-gradient(
+            135deg,
+            #7a5a12 0%,
+            #c9a227 28%,
+            #f6d77a 50%,
+            #c9a227 72%,
+            #7a5a12 100%
+        );
+
+    border-radius:
+        50% 35% 45% 50%;
+
+    box-shadow:
+        0 3px 6px
+        rgba(0,0,0,0.35);
+
+}
+
+
+.gift-lid::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: -18px;
+
+    width: 34px;
+    height: 18px;
+
+    transform:
+        translateX(0%)
+        rotate(8deg);
+
+    background:
+        linear-gradient(
+            225deg,
+            #7a5a12 0%,
+            #c9a227 28%,
+            #f6d77a 50%,
+            #c9a227 72%,
+            #7a5a12 100%
+        );
+
+    border-radius:
+        35% 50% 50% 45%;
+
+    box-shadow:
+        0 3px 6px
+        rgba(0,0,0,0.35);
+
+}
+
+/* =========================
+   NUDO DEL MOÑO
+========================= */
+
+.gift-knot {
+
+    position: absolute;
+
+    left: 50%;
+    top: -13px;
+
+    width: 15px;
+    height: 12px;
+
+    transform: translateX(-50%);
+
+    background:
+        radial-gradient(
+            ellipse at 35% 30%,
+            #f6d77a 0%,
+            #d4ad32 35%,
+            #a77b18 70%,
+            #6f4e0c 100%
+        );
+
+    border-radius: 48% 52% 50% 50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 2px 5px
+        rgba(0,0,0,0.45),
+
+        inset 1px 1px 2px
+        rgba(255,255,255,0.20);
+
+    z-index: 5;
+
+}
+
+/* =========================
+   APERTURA DE LA TAPA
+========================= */
+
+.gift-lid {
+
+    transform-origin: center bottom;
+
+    transition:
+        transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 1.4s ease;
+}
+
+
+.gift.open .gift-lid {
+
+    transform:
+        translateY(-38px)
+        rotateX(18deg)
+        rotateZ(-9deg);
+
+    box-shadow:
+        0 18px 25px
+        rgba(0,0,0,0.45);
+}
+
+/* =========================
+   ANIMACIONES
+========================= */
+
+@keyframes gift-appear {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+        translateY(20px)
+        scale(0.92);
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+        translateY(0)
+        scale(1);
+    }
+
+}
+
+
+@keyframes gift-glow {
+
+    0%,
+    100% {
+
+        transform: scale(0.9);
+
+        opacity: 0.35;
+    }
+
+    50% {
+
+        transform: scale(1.08);
+
+        opacity: 0.65;
+    }
+
+}
+
+/* =========================
+   LUZ AL ABRIR
+========================= */
+
+.gift.open .gift-inner-glow {
+
+    animation:
+        gift-inner-light 1.2s ease-out forwards,
+        gift-inner-pulse 2.8s ease-in-out 1.2s infinite;
+
+}
+
+@keyframes gift-inner-light {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translateX(-50%)
+            scale(0.2);
+
+    }
+
+    25% {
+
+        opacity: 1;
+
+        transform:
+            translateX(-50%)
+            scale(0.8);
+
+    }
+
+    55% {
+
+        opacity: 0.85;
+
+        transform:
+            translateX(-50%)
+            scale(1.15);
+
+    }
+
+    100% {
+
+        opacity: 0.55;
+
+        transform:
+            translateX(-50%)
+            scale(1);
+
+    }
+
+}
+
+
+@keyframes gift-inner-pulse {
+
+    0% {
+
+        opacity: 0.35;
+
+        transform:
+            translateX(-50%)
+            scale(0.95);
+
+    }
+
+    25% {
+
+        opacity: 0.75;
+
+        transform:
+            translateX(-50%)
+            scale(1.05);
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+        transform:
+            translateX(-50%)
+            scale(1.12);
+
+    }
+
+    75% {
+
+        opacity: 0.70;
+
+        transform:
+            translateX(-50%)
+            scale(1.04);
+
+    }
+
+    100% {
+
+        opacity: 0.35;
+
+        transform:
+            translateX(-50%)
+            scale(0.95);
+
+    }
+
+}
+
+/* =========================
+   MATERIALIZACIÓN DEL REGALO
+========================= */
+
+@keyframes gift-materialize {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+        translateY(20px)
+        scale(0.92);
+
+    }
+
+    45% {
+
+        opacity: 1;
+
+        transform:
+        translateY(-4px)
+        scale(1.015);
+
+    }
+
+    70% {
+
+        transform:
+        translateY(2px)
+        scale(0.995);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+        translateY(0)
+        scale(1);
+
+    }
+
+}
+
+/* =========================
+   CAJA ANTES DE ABRIR
+========================= */
+@keyframes gift-shake {
+
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    20% {
+        transform: translateY(0) rotate(-1deg);
+    }
+
+    40% {
+        transform: translateY(-2px) rotate(1.2deg);
+    }
+
+    60% {
+        transform: translateY(1px) rotate(-1deg);
+    }
+
+    80% {
+        transform: translateY(-2px) rotate(0.8deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+}
+
+/* =========================
+   AJUSTE DE CAPAS DE LA CAJA
+========================= */
+
+.gift {
+    z-index: 10;
+}
+
+.gift-base {
+    z-index: 4;
+}
+
+.gift-inner-glow {
+    z-index: 3;
+}
+
+.gift-lid {
+    z-index: 8;
+}
+
+
+/* =========================
+   CD — CAPA
+========================= */
+
+.cd-scene {
+    z-index: 6;
+}
+
+
+
+/* ===================================================
+   DEDICATORIA
+   ESCENA CD + REPRODUCTOR
+=================================================== */
+
+
+/* =========================
+   PANTALLA DE DEDICATORIA
+========================= */
+
+#dedication-screen {
+
+    background: transparent;
+
+    z-index: 1;
+
+}
+
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+
+.dedication-container {
+
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+}
+
+
+/* ===================================================
+   CD
+=================================================== */
+
+
+/* =========================
+   ESCENA DEL CD
+========================= */
+
+.cd-scene {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 220px;
+    height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /*
+       El CD empieza oculto.
+       Posteriormente JS agregará
+       la clase .cd-visible.
+    */
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 3;
+
+    transform:
+        translate(-50%, -50%)
+        translateY(45px)
+        scale(0.25)
+        rotate(-12deg);
+
+}
+
+
+/* =========================
+   CD VISIBLE
+========================= */
+
+.cd-scene.cd-visible {
+
+    animation:
+        cd-emerge-from-gift
+        2.2s
+        linear
+        forwards;
+
+}
+
+.cd-scene.cd-visible .cd {
+
+    animation:
+        cd-hover
+        1.8s
+        ease-in-out
+        infinite;
+
+}
+
+/* =========================
+   CD SUBIENDO
+========================= */
+
+.cd-movement.cd-rising {
+
+    animation:
+        cd-rise-test
+        4s
+        linear
+        forwards;
+
+}
+
+/* =========================
+   CD — ENTRADA AL REPRODUCTOR
+========================= */
+
+.cd-scene.cd-inserting .cd-movement {
+
+    animation:
+        cd-insert
+        1.5s
+        linear
+        forwards;
+
+}
+
+
+/* =========================
+   DETENER HOVER AL INSERTAR
+========================= */
+
+.cd-scene.cd-inserting .cd {
+
+    animation: none;
+
+}
+
+/* =========================
+   ANIMACIÓN DEL CD
+========================= */
+
+@keyframes cd-emerge-from-gift {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translate(-50%, -50%)
+            translate(0px, 35px)
+            scale(0.20)
+            rotate(-10deg);
+
+    }
+
+    10% {
+
+        opacity: 0.55;
+
+        transform:
+            translate(-50%, -50%)
+            translate(-2px, 10px)
+            scale(0.22)
+            rotate(35deg);
+
+    }
+
+    20% {
+
+        opacity: 0.85;
+
+        transform:
+            translate(-50%, -50%)
+            translate(-5px, -18px)
+            scale(0.25)
+            rotate(85deg);
+
+    }
+
+    30% {
+
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            translate(-8px, -50px)
+            scale(0.30)
+            rotate(140deg);
+
+    }
+
+    40% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(-10px, -85px)
+            scale(0.38)
+            rotate(200deg);
+
+    }
+
+    50% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(-8px, -120px)
+            scale(0.48)
+            rotate(260deg);
+
+    }
+
+    60% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(-3px, -150px)
+            scale(0.59)
+            rotate(320deg);
+
+    }
+
+    70% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(4px, -178px)
+            scale(0.68)
+            rotate(380deg);
+
+    }
+
+    80% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(9px, -200px)
+            scale(0.70)
+            rotate(440deg);
+
+    }
+
+    90% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(6px, -218px)
+            scale(0.75)
+            rotate(500deg);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            translate(0px, -230px)
+            scale(0.77)
+            rotate(540deg);
+
+    }
+
+}
+
+@keyframes cd-float {
+
+    0% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(0px, -230px)
+            scale(0.77)
+            rotate(540deg);
+
+    }
+
+    25% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(-4px, -242px)
+            scale(0.78)
+            rotate(548deg);
+
+    }
+
+    50% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(3px, -232px)
+            scale(0.77)
+            rotate(556deg);
+
+    }
+
+    75% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(-3px, -240px)
+            scale(0.78)
+            rotate(564deg);
+
+    }
+
+    100% {
+
+        transform:
+            translate(-50%, -50%)
+            translate(0px, -230px)
+            scale(0.77)
+            rotate(570deg);
+
+    }
+
+}
+
+@keyframes cd-hover {
+
+    0% {
+
+        transform:
+            translateY(0px)
+            rotate(0deg);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-8px)
+            rotate(3deg);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(0px)
+            rotate(0deg);
+
+    }
+
+}
+
+/* =========================
+   ANIMACIÓN DE SUBIDA
+========================= */
+
+@keyframes cd-rise-test {
+
+    from {
+
+        transform: translateY(0px);
+
+    }
+
+    to {
+
+        transform: translateY(300px);
+
+    }
+
+}
+
+/* =========================
+   CD
+========================= */
+
+.cd {
+
+    position: relative;
+
+    width: 220px;
+    height: 220px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            rgba(255,255,255,0.95) 0%,
+            rgba(210,210,210,0.65) 12%,
+            rgba(120,120,120,0.45) 28%,
+            rgba(30,30,30,0.90) 55%,
+            rgba(100,100,100,0.45) 72%,
+            rgba(220,220,220,0.65) 86%,
+            rgba(50,50,50,0.90) 100%
+        );
+
+    box-shadow:
+
+        0 0 20px
+        rgba(255,255,255,0.10),
+
+        0 20px 45px
+        rgba(0,0,0,0.75);
+
+}
+
+
+/* =========================
+   REFLEJO DEL CD
+========================= */
+
+.cd-reflection {
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            from 0deg,
+            rgba(255,0,0,0.10),
+            rgba(255,220,0,0.08),
+            rgba(0,255,200,0.10),
+            rgba(0,120,255,0.10),
+            rgba(180,0,255,0.08),
+            rgba(255,0,0,0.10)
+        );
+
+    mix-blend-mode: screen;
+
+    opacity: 0.65;
+
+}
+
+
+/* =========================
+   CENTRO DEL CD
+========================= */
+
+.cd-center {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 48px;
+    height: 48px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #080808 0%,
+            #1b1b1b 35%,
+            #090909 70%,
+            #000000 100%
+        );
+
+    box-shadow:
+        inset 0 0 8px
+        rgba(255,255,255,0.15);
+
+}
+
+
+/* =========================
+   ORIFICIO CENTRAL
+========================= */
+
+.cd-hole {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 12px;
+    height: 12px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: #000000;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(255,255,255,0.12);
+
+}
+
+
+/* ===================================================
+   REPRODUCTOR
+=================================================== */
+
+
+/* =========================
+   ESCENA DEL REPRODUCTOR
+========================= */
+
+.player-scene {
+
+    position: absolute;
+
+    left: 50%;
+    top: -50%;
+
+    width: 360px;
+    height: 240px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -50%)
+        translateY(-10px)
+        scale(0.92);
+
+    z-index: 2;
+
+}
+
+
+/* =========================
+   REPRODUCTOR VISIBLE
+========================= */
+
+.player-scene.player-visible {
+
+    animation:
+        player-appear
+        1.2s
+        cubic-bezier(0.22, 1, 0.36, 1)
+        forwards;
+
+    pointer-events: auto;
+
+}
+
+
+@keyframes player-appear {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translate(-50%, -50%)
+            translateY(25px)
+            scale(0.92);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+/* =========================
+   ANIMACIÓN DEL CD
+========================= */
+
+@keyframes cd-insert {
+
+    /* =========================
+       SALIDA DE LA CAJA
+    ========================= */
+
+    0% {
+
+        transform:
+            translateY(300px)
+            scale(1)
+            rotate(0deg);
+
+    }
+
+    20% {
+
+        transform:
+            translateY(400px)
+            scale(0.98)
+            rotate(90deg);
+
+    }
+
+    40% {
+
+        transform:
+            translateY(500px)
+            scale(0.94)
+            rotate(180deg);
+
+    }
+
+    60% {
+
+        transform:
+            translateY(590px)
+            scale(0.88)
+            rotate(270deg);
+
+    }
+
+    75% {
+
+        transform:
+            translateY(640px)
+            scale(0.78)
+            rotate(360deg);
+
+    }
+
+    /* =========================
+       LLEGADA AL REPRODUCTOR
+    ========================= */
+
+    85% {
+
+        transform:
+            translateY(690px)
+            scale(0.42)
+            rotate(540deg);
+
+        opacity: 1;
+
+    }
+
+    /* =========================
+       ENTRADA EN LA RANURA
+    ========================= */
+
+    90% {
+
+        transform:
+            translateY(700px)
+            scale(0.36)
+            rotate(570deg);
+
+        opacity: 1;
+
+    }
+
+    94% {
+
+        transform:
+            translateY(710px)
+            scale(0.30)
+            rotate(600deg);
+
+        opacity: .1;
+
+    }
+
+    97% {
+
+        transform:
+            translateY(718px)
+            scale(0.23)
+            rotate(630deg);
+
+        opacity: .5;
+
+    }
+
+    100% {
+
+        transform:
+            translateY(725px)
+            scale(0.15)
+            rotate(660deg);
+
+        opacity: 0;
+
+    }
+
+}
+
+/* =========================
+   REPRODUCTOR
+========================= */
+
+.cd-player {
+
+    position: relative;
+
+    width: 330px;
+    height: 190px;
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202020 0%,
+            #111111 45%,
+            #070707 100%
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+    box-shadow:
+
+        0 25px 60px
+        rgba(0,0,0,0.85),
+
+        inset 0 1px 0
+        rgba(255,255,255,0.08);
+
+}
+
+
+/* =========================
+   PANTALLA
+========================= */
+
+.player-display {
+
+    position: absolute;
+
+    left: 22px;
+    top: 22px;
+
+    width: 170px;
+    height: 62px;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #050505,
+            #111111
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        inset 0 0 15px
+        rgba(0,0,0,0.8);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+/* =========================
+   CONTENIDO DE PANTALLA
+========================= */
+
+.player-display-content {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.player-status {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    color:
+        rgba(255,255,255,0.45);
+
+    transition:
+        color 0.4s ease,
+        text-shadow 0.4s ease;
+
+}
+
+
+/* =========================
+   READY — ACTIVO
+========================= */
+
+.player-status.ready-active {
+
+    color:
+        rgba(80,255,120,0.95);
+
+    text-shadow:
+        0 0 6px
+        rgba(80,255,120,0.55),
+
+        0 0 12px
+        rgba(80,255,120,0.25);
+
+}
+
+/* =========================
+   RANURA DEL CD
+========================= */
+
+.player-slot {
+
+    position: absolute;
+
+    left: 22px;
+    right: 22px;
+
+    top: 100px;
+
+    height: 8px;
+
+    border-radius: 8px;
+
+    background: #000000;
+
+    box-shadow:
+
+        inset 0 2px 5px
+        rgba(0,0,0,0.9),
+
+        0 0 0 1px
+        rgba(255,255,255,0.06);
+
+}
+
+
+/* =========================
+   LUZ DE LA RANURA
+========================= */
+
+.slot-light {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 30px;
+    height: 2px;
+
+    transform:
+        translate(-50%, -50%);
+
+    background:
+        rgba(255,255,255,0.25);
+
+    opacity: 0.35;
+
+    filter:
+        blur(1px);
+
+}
+
+
+/* =========================
+   CONTROLES
+========================= */
+
+.player-controls {
+
+    position: absolute;
+
+    right: 22px;
+    top: 22px;
+
+    width: 116px;
+    height: 62px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+/* =========================
+   BOTONES
+========================= */
+
+.player-button {
+
+    width: 30px;
+    height: 30px;
+
+    padding: 0;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.025);
+
+    color:
+        rgba(255,255,255,0.70);
+
+    font-size: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+
+}
+
+
+.player-button:hover {
+
+    background:
+        rgba(255,255,255,0.10);
+
+    color:
+        #ffffff;
+
+}
+
+
+.player-button:active {
+
+    transform:
+        scale(0.90);
+
+}
+
+
+/* =========================
+   BOTÓN PLAY
+========================= */
+
+.player-play {
+
+    width: 40px;
+    height: 40px;
+
+    font-size: 13px;
+
+    border-color:
+        rgba(255,255,255,0.20);
+
+}
+
+
+/* =========================
+   INDICADOR
+========================= */
+
+.player-indicator {
+
+    position: absolute;
+
+    right: 24px;
+    bottom: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+.indicator-light {
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.45);
+
+    box-shadow:
+        0 0 5px
+        rgba(255,255,255,0.25);
+
+    transition:
+        background 0.4s ease,
+        box-shadow 0.4s ease;
+
+}
+
+
+/* =========================
+   DISC — ACTIVO / PARPADEO
+========================= */
+
+.indicator-light.disc-active {
+
+    background:
+        rgba(255,50,50,1);
+
+    box-shadow:
+        0 0 5px
+        rgba(255,50,50,0.85),
+
+        0 0 10px
+        rgba(255,50,50,0.45);
+
+    animation:
+        disc-blink
+        0.8s
+        ease-in-out
+        infinite;
+
+}
+
+
+/* =========================
+   INDICACIÓN PLAY
+========================= */
+
+.play-hint {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: -58px;
+
+    transform:
+        translateX(-50%)
+        translateY(8px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 3px;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    text-align: center;
+
+    color:
+        rgba(255,255,255,0.45);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+
+}
+
+
+/* =========================
+   INDICACIÓN — ACTIVA
+========================= */
+
+.play-hint.play-hint-active {
+
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+
+}
+
+/* =========================
+   PARPADEO DEL DISC
+========================= */
+
+@keyframes disc-blink {
+
+    0%,
+    100% {
+
+        opacity: 1;
+
+        box-shadow:
+            0 0 5px
+            rgba(255,50,50,0.85),
+
+            0 0 10px
+            rgba(255,50,50,0.45);
+
+    }
+
+    50% {
+
+        opacity: 0.25;
+
+        box-shadow:
+            0 0 2px
+            rgba(255,50,50,0.25);
+
+    }
+
+}
+
+
+/* ===================================================
+   VIDEO
+=================================================== */
+
+
+/* =========================
+   ESCENA DEL VIDEO
+========================= */
+
+.video-scene {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 9999;
+
+    background: #000000;
+
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
+}
+
+/* =========================
+   VIDEO — ACTIVO
+========================= */
+
+.video-scene.video-active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+/* =========================
+   VIDEO
+========================= */
+
+.dedication-video {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    object-fit: contain;
+
+    display: block;
+
+    z-index: 10000;
+
+    background: #000000;
+}
+
+/* ===================================================
+   RESPONSIVE — CD + REPRODUCTOR
+=================================================== */
+
+@media (max-width: 600px) {
+
+    .cd-scene {
+
+        width: 220px;
+        height: 220px;
+
+    }
+
+
+    .cd {
+
+        width: 180px;
+        height: 180px;
+
+    }
+
+
+    .cd-center {
+
+        width: 42px;
+        height: 42px;
+
+    }
+
+
+    .player-scene {
+
+        width: 310px;
+        height: 210px;
+
+    }
+
+
+    .cd-player {
+
+        width: 285px;
+        height: 165px;
+
+        padding: 18px;
+
+        border-radius: 15px;
+
+    }
+
+
+    .player-display {
+
+        left: 18px;
+        top: 18px;
+
+        width: 145px;
+        height: 52px;
+
+    }
+
+
+    .player-slot {
+
+        left: 18px;
+        right: 18px;
+
+        top: 84px;
+
+    }
+
+
+    .player-controls {
+
+        right: 18px;
+        top: 18px;
+
+        gap: 5px;
+
+    }
+
+
+    .player-button {
+
+        width: 26px;
+        height: 26px;
+
+        font-size: 12px;
+
+    }
+
+
+    .player-play {
+
+        width: 34px;
+        height: 34px;
+
+        font-size: 11px;
+
+    }
+
+
+    .player-indicator {
+
+        right: 19px;
+        bottom: 17px;
+
+    }
+
+}
+
+
+
+/* =========================
+   CONTROLES DEL VIDEO
+========================= */
+
+.video-controls {
+
+    position: fixed;
+
+    left: 50%;
+    bottom: 28px;
+
+    transform:
+        translateX(-50%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    width: auto;
+
+    z-index: 10001;
+
+    opacity: 1;
+
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+
+}
+
+
+/* =========================
+   CONTROLES OCULTOS
+========================= */
+
+.video-scene.controls-hidden .video-controls {
+
+    opacity: 0;
+
+    transform:
+        translateX(-50%)
+        translateY(8px);
+
+    pointer-events: none;
+
+}
+
+/* =========================
+   BARRA DE PROGRESO
+========================= */
+
+.video-progress {
+
+    width: 260px;
+    height: 4px;
+
+    background:
+        rgba(255,255,255,0.20);
+
+    border-radius: 999px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================
+   PROGRESO ACTUAL
+========================= */
+
+.video-progress-bar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        rgba(255,255,255,0.90);
+
+    border-radius: 999px;
+
+}
+
+
+/* =========================
+   BOTONES DEL VIDEO
+========================= */
+
+.video-buttons {
+
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+}
+
+
+/* =========================
+   BOTONES
+========================= */
+
+.video-control {
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.25);
+
+    border-radius: 50%;
+
+    background:
+        rgba(0,0,0,0.45);
+
+    backdrop-filter: blur(8px);
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+
+}
+
+
+/* =========================
+   BOTÓN PLAY / PAUSA
+========================= */
+
+.video-play {
+
+    width: 46px;
+    height: 46px;
+
+    font-size: 13px;
+
+}
+
+
+/* =========================
+   BOTÓN RETROCEDER
+========================= */
+
+.video-back {
+
+    font-size: 18px;
+
+}
+
+/* =========================
+   CONTROLES DEL VIDEO
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .video-controls {
+
+        bottom: 24px;
+
+        gap: 12px;
+
+    }
+
+
+    .video-progress {
+
+        width: 220px;
+
+    }
+
+
+    .video-buttons {
+
+        gap: 12px;
+
+    }
+
+
+    .video-control {
+
+        width: 40px;
+        height: 40px;
+
+        font-size: 13px;
+
+    }
+
+
+    .video-play {
+
+        width: 44px;
+        height: 44px;
+
+        font-size: 12px;
+
+    }
+
+
+    .video-back {
+
+        font-size: 17px;
+
+    }
+
+} 
+
+/* ===================================================
+   CD — AJUSTE MÓVIL
+=================================================== */
+
+@media (max-width: 600px) {
+
+    @keyframes cd-insert-mobile {
+
+        0% {
+
+            transform:
+                translateY(300px)
+                scale(1)
+                rotate(0deg);
+
+        }
+
+        20% {
+
+            transform:
+                translateY(380px)
+                scale(0.98)
+                rotate(90deg);
+
+        }
+
+        40% {
+
+            transform:
+                translateY(460px)
+                scale(0.94)
+                rotate(180deg);
+
+        }
+
+        60% {
+
+            transform:
+                translateY(530px)
+                scale(0.88)
+                rotate(270deg);
+
+        }
+
+        75% {
+
+            transform:
+                translateY(575px)
+                scale(0.78)
+                rotate(360deg);
+
+        }
+
+        85% {
+
+            transform:
+                translateY(595px)
+                scale(0.42)
+                rotate(540deg);
+
+            opacity: 1;
+
+        }
+
+        90% {
+
+            transform:
+                translateY(605px)
+                scale(0.36)
+                rotate(570deg);
+
+            opacity: 1;
+
+        }
+
+        94% {
+
+            transform:
+                translateY(613px)
+                scale(0.30)
+                rotate(600deg);
+
+            opacity: 0.65;
+
+        }
+
+        97% {
+
+            transform:
+                translateY(620px)
+                scale(0.23)
+                rotate(630deg);
+
+            opacity: 0.3;
+
+        }
+
+        100% {
+
+            transform:
+                translateY(625px)
+                scale(0.15)
+                rotate(660deg);
+
+            opacity: 0;
+
+        }
+
+    }
+
+
+    .cd-scene.cd-inserting .cd-movement {
+
+        animation:
+            cd-insert-mobile
+            2.2s
+            linear
+            forwards;
+
+    }
+
+}
+
+/* ===================================================
+   REPRODUCTOR — AJUSTE VERTICAL RESPONSIVE
+=================================================== */
+
+@media (max-width: 600px) {
+
+    .player-scene {
+
+        top: calc(-50% + (100vh - 725px));
+
+    }
+
+}
+
+/* ===================================================
+   AVISO — GIRAR TELÉFONO
+=================================================== */
+
+.rotate-screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #000000;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 20000;
+
+}
+
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.rotate-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+}
+
+
+/* =========================
+   TELÉFONO
+========================= */
+
+.rotate-phone {
+
+    width: 90px;
+    height: 160px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 35px;
+
+}
+
+
+/* =========================
+   MARCO DEL TELÉFONO
+========================= */
+
+.phone-frame {
+
+    width: 70px;
+    height: 135px;
+
+    border: 3px solid rgba(255,255,255,0.9);
+
+    border-radius: 12px;
+
+    position: relative;
+
+    transform-origin: center center;
+
+}
+
+
+/* =========================
+   PANTALLA
+========================= */
+
+.phone-screen {
+
+    position: absolute;
+
+    left: 5px;
+    right: 5px;
+
+    top: 8px;
+    bottom: 8px;
+
+    border-radius: 6px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #171717,
+            #050505
+        );
+
+}
+
+
+/* =========================
+   ANIMACIÓN DEL TELÉFONO
+========================= */
+
+.rotate-screen.rotate-active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+
+.rotate-screen.rotate-active .phone-frame {
+
+    animation:
+        phone-rotate
+        2.5s
+        ease-in-out
+        2
+        forwards;
+
+}
+
+
+/* =========================
+   GIRO
+========================= */
+
+@keyframes phone-rotate {
+
+    0% {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+    45% {
+
+        transform:
+            rotate(90deg);
+
+    }
+
+    55% {
+
+        transform:
+            rotate(90deg);
+
+    }
+
+    100% {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+}
+
+
+/* =========================
+   TEXTO
+========================= */
+
+.rotate-text {
+
+    opacity: 0;
+
+    transform:
+        translateY(10px);
+
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+
+}
+
+
+.rotate-screen.rotate-active .rotate-text {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+
+}
+
+
+.rotate-text h2 {
+
+    margin-bottom: 10px;
+
+    font-size: 22px;
+
+    font-weight: 300;
+
+    letter-spacing: 1px;
+
+}
+
+
+.rotate-text p {
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    color:
+        rgba(255,255,255,0.65);
+
+}
+
+
+/* ===================================================
+   AVISO — SOLO MÓVIL
+=================================================== */
+
+@media (min-width: 601px) {
+
+    .rotate-screen {
+
+        display: none;
+
+    }
+
+}
+
+/* ===================================================
+   FONDO — AJUSTE RESPONSIVE MÓVIL
+=================================================== */
+
+@media (max-width: 600px) {
+
+    body {
+
+        background:
+            radial-gradient(
+                ellipse at center,
+                #050505 0%,
+                #050505 15%,
+                #100304 40%,
+                #260507 100%
+            );
+
+    }
+
+}
+
+/* ===================================================
+   CORAZONES — PANTALLA DE HUELLA
+=================================================== */
+
+.heart-decoration {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    z-index: 0;
+
+}
+
+
+.heart {
+
+    position: absolute;
+
+    display: block;
+
+    color: rgba(255, 90, 110, 0.13);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-weight: normal;
+
+    line-height: 1;
+
+    user-select: none;
+
+}
+
+.heart-1 {
+    top: 6%;
+    left: 8%;
+    font-size: 17px;
+    transform: rotate(-14deg);
+}
+
+.heart-2 {
+    top: 4%;
+    left: 42%;
+    font-size: 27px;
+    transform: rotate(11deg);
+}
+
+.heart-3 {
+    top: 10%;
+    right: 9%;
+    font-size: 19px;
+    transform: rotate(18deg);
+}
+
+.heart-4 {
+    top: 15%;
+    left: 21%;
+    font-size: 34px;
+    transform: rotate(-20deg);
+}
+
+.heart-5 {
+    top: 19%;
+    right: 29%;
+    font-size: 15px;
+    transform: rotate(8deg);
+}
+
+.heart-6 {
+    top: 25%;
+    left: 5%;
+    font-size: 24px;
+    transform: rotate(-9deg);
+}
+
+.heart-7 {
+    top: 22%;
+    right: 7%;
+    font-size: 39px;
+    transform: rotate(13deg);
+}
+
+.heart-8 {
+    top: 30%;
+    left: 16%;
+    font-size: 18px;
+    transform: rotate(21deg);
+}
+
+.heart-9 {
+    top: 28%;
+    left: 55%;
+    font-size: 22px;
+    transform: rotate(-16deg);
+}
+
+.heart-10 {
+    top: 34%;
+    right: 18%;
+    font-size: 31px;
+    transform: rotate(7deg);
+}
+
+.heart-11 {
+    top: 38%;
+    left: 4%;
+    font-size: 16px;
+    transform: rotate(-18deg);
+}
+
+.heart-12 {
+    top: 40%;
+    right: 5%;
+    font-size: 21px;
+    transform: rotate(16deg);
+}
+
+.heart-13 {
+    top: 44%;
+    left: 12%;
+    font-size: 29px;
+    transform: rotate(-7deg);
+}
+
+.heart-14 {
+    top: 47%;
+    right: 27%;
+    font-size: 14px;
+    transform: rotate(19deg);
+}
+
+.heart-15 {
+    top: 51%;
+    left: 3%;
+    font-size: 42px;
+    transform: rotate(-12deg);
+}
+
+.heart-16 {
+    top: 54%;
+    right: 8%;
+    font-size: 25px;
+    transform: rotate(10deg);
+}
+
+.heart-17 {
+    top: 58%;
+    left: 24%;
+    font-size: 17px;
+    transform: rotate(-21deg);
+}
+
+.heart-18 {
+    top: 57%;
+    right: 31%;
+    font-size: 30px;
+    transform: rotate(15deg);
+}
+
+.heart-19 {
+    top: 63%;
+    left: 7%;
+    font-size: 20px;
+    transform: rotate(9deg);
+}
+
+.heart-20 {
+    top: 66%;
+    right: 4%;
+    font-size: 35px;
+    transform: rotate(-17deg);
+}
+
+.heart-21 {
+    top: 68%;
+    left: 19%;
+    font-size: 14px;
+    transform: rotate(18deg);
+}
+
+.heart-22 {
+    top: 71%;
+    right: 22%;
+    font-size: 23px;
+    transform: rotate(-8deg);
+}
+
+.heart-23 {
+    top: 75%;
+    left: 5%;
+    font-size: 28px;
+    transform: rotate(13deg);
+}
+
+.heart-24 {
+    top: 77%;
+    right: 10%;
+    font-size: 16px;
+    transform: rotate(-19deg);
+}
+
+.heart-25 {
+    top: 81%;
+    left: 14%;
+    font-size: 36px;
+    transform: rotate(6deg);
+}
+
+.heart-26 {
+    top: 80%;
+    left: 48%;
+    font-size: 18px;
+    transform: rotate(-14deg);
+}
+
+.heart-27 {
+    top: 84%;
+    right: 27%;
+    font-size: 26px;
+    transform: rotate(17deg);
+}
+
+.heart-28 {
+    top: 86%;
+    right: 5%;
+    font-size: 20px;
+    transform: rotate(-10deg);
+}
+
+.heart-29 {
+    top: 89%;
+    left: 6%;
+    font-size: 23px;
+    transform: rotate(20deg);
+}
+
+.heart-30 {
+    top: 91%;
+    left: 31%;
+    font-size: 44px;
+    transform: rotate(-8deg);
+}
+
+.heart-31 {
+    top: 90%;
+    right: 17%;
+    font-size: 15px;
+    transform: rotate(13deg);
+}
+
+.heart-32 {
+    top: 94%;
+    left: 15%;
+    font-size: 30px;
+    transform: rotate(-16deg);
+}
+
+.heart-33 {
+    top: 93%;
+    right: 8%;
+    font-size: 37px;
+    transform: rotate(9deg);
+}
+
+.heart-34 {
+    top: 12%;
+    left: 68%;
+    font-size: 16px;
+    transform: rotate(-20deg);
+}
+
+.heart-35 {
+    top: 36%;
+    left: 72%;
+    font-size: 43px;
+    opacity: 0.07;
+    transform: rotate(12deg);
+}
+
+.heart-36 {
+    top: 61%;
+    left: 55%;
+    font-size: 48px;
+    opacity: 0.06;
+    transform: rotate(-11deg);
+}
+
+/* ===================================================
+   FIRMA — PIE DE PANTALLA
+=================================================== */
+
+.dedication-signature {
+
+    position: absolute;
+
+    bottom:
+        max(24px, env(safe-area-inset-bottom));
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    z-index: 1;
+
+    pointer-events: none;
+
+}
+
+
+/* =========================
+   INICIALES
+========================= */
+
+.signature-names {
+
+    font-size: 14px;
+
+    font-weight: 400;
+
+    letter-spacing: 4px;
+
+    color: rgba(255, 255, 255, 0.55);
+
+}
+
+
+/* =========================
+   FECHA
+========================= */
+
+.signature-date {
+
+    margin-top: 5px;
+
+    font-size: 10px;
+
+    font-weight: 300;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.35);
+
+}

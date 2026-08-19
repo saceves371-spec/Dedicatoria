@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Para ti ❤️</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <main class="app">
+
+        <!-- =========================
+             LECTOR DE HUELLA
+        ========================== -->
+
+        <section id="fingerprint-screen" class="screen active">
+
+            <!-- ===================================================
+                 CORAZONES DECORATIVOS
+            =================================================== -->
+
+            <div class="heart-decoration" aria-hidden="true">
+
+                <span class="heart heart-1">♡</span>
+                <span class="heart heart-2">♡</span>
+                <span class="heart heart-3">♡</span>
+                <span class="heart heart-4">♡</span>
+                <span class="heart heart-5">♡</span>
+                <span class="heart heart-6">♡</span>
+                <span class="heart heart-7">♡</span>
+                <span class="heart heart-8">♡</span>
+                <span class="heart heart-9">♡</span>
+                <span class="heart heart-10">♡</span>
+                <span class="heart heart-11">♡</span>
+                <span class="heart heart-12">♡</span>
+
+                <span class="heart heart-13">♡</span>
+                <span class="heart heart-14">♡</span>
+                <span class="heart heart-15">♡</span>
+                <span class="heart heart-16">♡</span>
+                <span class="heart heart-17">♡</span>
+                <span class="heart heart-18">♡</span>
+                <span class="heart heart-19">♡</span>
+                <span class="heart heart-20">♡</span>
+                <span class="heart heart-21">♡</span>
+                <span class="heart heart-22">♡</span>
+                <span class="heart heart-23">♡</span>
+                <span class="heart heart-24">♡</span>
+
+                <span class="heart heart-25">♡</span>
+                <span class="heart heart-26">♡</span>
+                <span class="heart heart-27">♡</span>
+                <span class="heart heart-28">♡</span>
+                <span class="heart heart-29">♡</span>
+                <span class="heart heart-30">♡</span>
+                <span class="heart heart-31">♡</span>
+                <span class="heart heart-32">♡</span>
+                <span class="heart heart-33">♡</span>
+                <span class="heart heart-34">♡</span>
+                <span class="heart heart-35">♡</span>
+                <span class="heart heart-36">♡</span>
+
+            </div>
+
+            <div class="fingerprint-container">
+
+                <p class="eyebrow">
+                    VERIFICACIÓN DE IDENTIDAD
+                </p>
+
+                <h1>
+                    Coloca tu dedo
+                </h1>
+
+                <p class="instruction">
+                    Toca la huella para comenzar
+                </p>
+
+                <button
+                id="fingerprint-button"
+                class="fingerprint-button"
+                type="button"
+                aria-label="Escanear huella"
+                >
+
+                <svg
+                class="fingerprint-svg"
+                viewBox="0 0 200 240"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                >
+
+                <path d="M100 20
+                C55 20 25 55 25 100
+                C25 145 45 170 45 205" />
+
+                <path d="M100 40
+                C65 40 45 65 45 100
+                C45 135 60 155 60 190" />
+
+                <path d="M100 60
+                C78 60 65 78 65 102
+                C65 130 75 145 75 175" />
+
+                <path d="M100 80
+                C90 80 82 88 82 102
+                C82 120 88 130 88 155" />
+
+                <path d="M100 20
+                C145 20 175 55 175 100
+                C175 145 155 170 155 205" />
+
+                <path d="M100 40
+                C135 40 155 65 155 100
+                C155 135 140 155 140 190" />
+
+                <path d="M100 60
+                C122 60 135 78 135 102
+                C135 130 125 145 125 175" />
+
+                <path d="M100 80
+                C110 80 118 88 118 102
+                C118 120 112 130 112 155" />
+
+                <path d="M100 95
+                C96 95 93 98 93 103
+                C93 115 100 120 100 135
+                C100 120 107 115 107 103
+                C107 98 104 95 100 95" />
+
+            </svg>
+
+            <span class="scan-line"></span>
+
+        </button>
+
+        <p id="status" class="status">
+            Esperando...
+        </p>
+
+        <div class="progress-container">
+
+            <div
+            id="progress-bar"
+            class="progress-bar"
+            ></div>
+
+        </div>
+
+        <p id="percentage" class="percentage">
+            0%
+        </p>
+
+    </div>
+
+    <!-- ===================================================
+          FIRMA
+     =================================================== -->
+
+     <div class="dedication-signature">
+
+        <span class="signature-names">M&amp;S</span>
+
+        <span class="signature-date">
+            24-ABRIL-2026
+        </span>
+
+    </div>
+
+</section>
+
+
+        <!-- =========================
+             PANTALLA DE IDENTIDAD
+        ========================== -->
+
+        <section id="verified-screen" class="screen">
+
+            <div class="verified-container">
+
+                <div class="check">
+                    ✓
+                </div>
+
+                <p class="eyebrow">
+                    IDENTIDAD VERIFICADA
+                </p>
+
+                <h1>
+                    Acceso autorizado
+                </h1>
+
+                <p>
+                    Este pequeño regalo<br>
+                    es solamente para ti. ❤️
+                </p>
+
+            </div>
+
+        </section>
+
+<!-- =========================
+     PANTALLA DE TRANSICIÓN
+========================= -->
+
+<section id="transition-screen" class="screen">
+
+    <div class="transition-container">
+
+        <div class="reveal-light"></div>
+
+        <div class="camera-content">
+
+        <!-- =========================
+             REGALO
+        ========================== -->
+
+        <div class="gift">
+
+            <div class="gift-glow"></div>
+
+            <div class="gift-box">
+
+                <div class="gift-inner-glow"></div>
+
+                <div class="gift-base"></div>
+
+                <div class="gift-ribbon vertical"></div>
+
+                <div class="gift-ribbon horizontal"></div>
+
+                <div class="gift-lid">
+
+                    <div class="gift-ribbon vertical"></div>
+
+                    <div class="gift-knot"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+             CD QUE SALE DEL REGALO
+        ========================== -->
+
+        <div class="cd-scene">
+
+            <div class="cd-movement">
+
+                <div class="cd">
+
+                    <div class="cd-reflection"></div>
+
+                    <div class="cd-center">
+
+                        <div class="cd-hole"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+             REPRODUCTOR
+        ========================= -->
+
+         <div class="player-scene">
+
+            <div class="cd-player">
+
+                <!-- PANTALLA -->
+
+                <div class="player-display">
+
+                    <div class="player-display-content">
+
+                        <span class="player-status">
+                            READY
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RANURA DEL CD -->
+
+                <div class="player-slot">
+
+                    <div class="slot-light"></div>
+
+                </div>
+
+
+                <!-- CONTROLES -->
+
+                <div class="player-controls">
+
+                    <button
+                        type="button"
+                        class="player-button player-play"
+                        aria-label="Reproducir">
+                        ▶
+                    </button>
+
+                </div>
+
+
+    <!-- INDICADOR -->
+
+    <div class="player-indicator">
+
+        <span class="indicator-light"></span>
+
+        <span class="indicator-text">
+            DISC
+        </span>
+
+    </div>
+
+<!-- =========================
+     INDICACIÓN PLAY
+========================= -->
+
+<div class="play-hint">
+
+    <span>
+        Dale Play
+    </span>
+
+    <span>
+        para comenzar ♥
+    </span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PANTALLA DE DEDICATORIA
+========================= -->
+
+<section id="dedication-screen" class="screen">
+
+    <div class="dedication-container">
+
+        <!-- ===================================================
+             AVISO — GIRAR TELÉFONO
+        =================================================== -->
+
+        <div class="rotate-screen">
+
+            <div class="rotate-content">
+
+                <div class="rotate-phone">
+
+                    <div class="phone-frame">
+
+                        <div class="phone-screen"></div>
+        
+                    </div>
+
+                </div>
+
+                <div class="rotate-text">
+
+                    <h2>Gira tu teléfono</h2>
+
+                    <p>
+                        para disfrutar<br>
+                        la dedicatoria ❤️
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+             ESCENA DEL VIDEO
+        ========================== -->
+
+        <div class="video-scene">
+
+            <video
+                id="dedication-video"
+                class="dedication-video"
+                playsinline
+                preload="auto">
+
+                <source
+                    src="assets/video/dedicatoria.mp4"
+                    type="video/mp4">
+
+            </video>
+
+
+            <!-- =========================
+                 CONTROLES DEL VIDEO
+            ========================== -->
+
+            <div class="video-controls">
+
+                <!-- BARRA DE PROGRESO -->
+
+                <div class="video-progress">
+
+                    <div class="video-progress-bar"></div>
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="video-buttons">
+
+                    <button
+                        class="video-control video-back"
+                        type="button"
+                        aria-label="Retroceder 10 segundos">
+
+                        ↶
+
+                    </button>
+
+
+                    <button
+                        class="video-control video-play"
+                        type="button"
+                        aria-label="Pausar video">
+
+                        ❚❚
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</section>
+
+
+
+</main>
+
+<script src="js/app.js"></script>
+
+</body>
+
+</html>
