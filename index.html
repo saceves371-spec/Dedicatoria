@@ -9,8 +9,9 @@
 
     <title>Para ti ❤️</title>
 
-    <link rel="stylesheet" href="css/style.css?v=20261001">
+    <link rel="stylesheet" href="css/style.css?v=20261006">
 
+<link rel="stylesheet" href="css/letters.css?v=20261006">
 </head>
 
 <body>
@@ -91,52 +92,7 @@
                 aria-label="Escanear huella"
                 >
 
-                <svg
-                class="fingerprint-svg"
-                viewBox="0 0 200 240"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                >
-
-                <path d="M100 20
-                C55 20 25 55 25 100
-                C25 145 45 170 45 205" />
-
-                <path d="M100 40
-                C65 40 45 65 45 100
-                C45 135 60 155 60 190" />
-
-                <path d="M100 60
-                C78 60 65 78 65 102
-                C65 130 75 145 75 175" />
-
-                <path d="M100 80
-                C90 80 82 88 82 102
-                C82 120 88 130 88 155" />
-
-                <path d="M100 20
-                C145 20 175 55 175 100
-                C175 145 155 170 155 205" />
-
-                <path d="M100 40
-                C135 40 155 65 155 100
-                C155 135 140 155 140 190" />
-
-                <path d="M100 60
-                C122 60 135 78 135 102
-                C135 130 125 145 125 175" />
-
-                <path d="M100 80
-                C110 80 118 88 118 102
-                C118 120 112 130 112 155" />
-
-                <path d="M100 95
-                C96 95 93 98 93 103
-                C93 115 100 120 100 135
-                C100 120 107 115 107 103
-                C107 98 104 95 100 95" />
-
-            </svg>
+                <svg class="fingerprint-svg fingerprint-reference" viewBox="0 0 447 447" aria-hidden="true"><defs><filter id="ink-invert" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/></filter><mask id="fingerprint-ink" mask-type="luminance"><image href="assets/images/huella-referencia.png?v=20261006" width="447" height="447" filter="url(#ink-invert)"/></mask></defs><rect width="447" height="447" fill="#fff0e9" stroke="none" mask="url(#fingerprint-ink)"/></svg>
 
             <span class="scan-line"></span>
 
@@ -470,8 +426,11 @@
 
 </main>
 
-<script src="js/app.js?v=20261001"></script>
+<script src="js/letters-data.js?v=20261006"></script>
+<script src="js/letters.js?v=20261006"></script>
+<script src="js/app.js?v=20261006"></script>
 
 </body>
 
 </html>
+

@@ -10,9 +10,30 @@ const dedicationScreen = $('#dedication-screen');
 const stage = $('.transition-container');
 const gift = $('.gift');
 let cdScene = $('.cd-scene');
+cdScene.innerHTML = '<span class="library-cd stage-disc" aria-hidden="true"></span>';
 let secondDisc;
 let selectedIndex = 0;
 let choicePanel;
+let libraryOrigin;
+let cancelChoice;
+const libraryBack = document.createElement('button');
+libraryBack.className = 'library-back';
+libraryBack.textContent = '‹ Videos y cartas';
+libraryBack.hidden = true;
+transitionScreen.append(libraryBack);
+libraryBack.addEventListener('click', async () => {
+    if (libraryBack.disabled) return;
+    libraryBack.disabled = true;
+    stage.classList.add('returning-to-library');
+    await new Promise(resolve => setTimeout(resolve, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 550));
+    libraryBack.hidden = true;
+    if (cancelChoice) cancelChoice(-1);
+    else openLibrary();
+    // Keep the fade until the old scene has been removed by its pending selection.
+    await Promise.resolve();
+    stage.classList.remove('returning-to-library');
+    libraryBack.disabled = false;
+});
 const videos = [
     { title: 'Dedicatoria', src: 'assets/video/dedicatoria.mp4' },
     { title: 'Todo lo que nunca dije', src: 'assets/video/lo-que-nunca-te-dije.mp4' }
@@ -41,10 +62,30 @@ let scenePhase = 'gift';
 let phaseProgress = 0;
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const mix = (a, b, t) => a + (b - a) * t;
+// Restore the same backdrop from either branch, without replaying the gift opening.
+document.addEventListener('library-home', event => {
+    const camera = $('.camera-content');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    gift.style.visibility = 'visible';
+    camera.style.transition = 'none';
+    camera.style.transform = event.detail.first ? 'translateY(0) scale(1)' : 'translateY(85vh) scale(.7)';
+    camera.style.opacity = event.detail.first ? '1' : '0';
+    camera.getBoundingClientRect();
+    camera.style.transition = reduced ? 'none' : 'transform 1.2s cubic-bezier(.22,.61,.36,1), opacity .9s ease';
+    if (event.detail.first && !reduced) camera.style.transition = 'transform 2.4s cubic-bezier(.4,0,.2,1) .7s, opacity 2s ease .7s';
+    camera.style.transform = 'translateY(30vh) scale(.7)';
+    camera.style.opacity = '.45';
+});
+document.addEventListener('library-leave', () => {
+    const camera = $('.camera-content');
+    camera.style.transition = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'none' : 'transform .8s ease, opacity .65s ease';
+    camera.style.transform = 'translateY(65vh) scale(.7)';
+    camera.style.opacity = '0';
+});
 
 // Recompute coordinates per frame so a resized screen keeps the same scene.
 function renderScene() {
-    if (scenePhase === 'gift') return;
+    if (scenePhase === 'gift' || scenePhase === 'library') return;
     const {width, height} = stage.getBoundingClientRect();
     const playerScale = Math.min(1, (width - 32) / playerScene.offsetWidth,
         height * .38 / playerScene.offsetHeight);
@@ -56,14 +97,15 @@ function renderScene() {
         : scenePhase === 'ready' ? height / 2 : upperY;
     playerScene.style.top = `${playerY}px`;
     playerScene.style.transform = `translate(-50%, -50%) scale(${playerScale})`;
-    let y, size = discScale, rotation = 180;
+    let y, size = discScale, rotation = 0;
     if (scenePhase === 'travel') {
-        y = mix(height / 2 - Math.min(230, height * .25), lowerY, phaseProgress);
+        y = mix(libraryOrigin?.y ?? height / 2 - Math.min(230, height * .25), lowerY, phaseProgress);
+        size = mix((libraryOrigin?.width || 220 * discScale) / 220, discScale, phaseProgress);
         playerScene.style.opacity = '0';
         $('.camera-content').style.transform = `translateY(${(height + gift.offsetHeight) * phaseProgress}px)`;
     } else if (['appear', 'split', 'choose'].includes(scenePhase)) {
         y = lowerY;
-        playerScene.style.opacity = scenePhase === 'appear' ? String(phaseProgress) : '1';
+        playerScene.style.opacity = ['appear', 'split'].includes(scenePhase) ? String(phaseProgress) : '1';
     } else {
         playerScene.style.opacity = '1';
         const slot = $('.player-slot').getBoundingClientRect();
@@ -78,6 +120,7 @@ function renderScene() {
         cdScene.style.opacity = String(t < .9 ? 1 : (1 - t) / .1);
     }
     let x = width / 2;
+    if (scenePhase === 'travel' && libraryOrigin) x = mix(libraryOrigin.x, x, phaseProgress);
     const spread = Math.min(110, width * .23);
     if (scenePhase === 'split' || scenePhase === 'choose') {
         const progress = scenePhase === 'choose' ? 1 : phaseProgress;
@@ -85,7 +128,7 @@ function renderScene() {
         secondDisc.style.left = `${width / 2 + spread * progress}px`;
         secondDisc.style.top = `${lowerY}px`;
         secondDisc.style.opacity = String(progress);
-        secondDisc.style.transform = `translate(-50%, -50%) scale(${discScale}) rotate(180deg)`;
+        secondDisc.style.transform = `translate(-50%, -50%) scale(${discScale})`;
         if (choicePanel) {
             choicePanel.style.top = `${lowerY - 90 * discScale}px`;
             choicePanel.style.setProperty('--choice-gap', `${spread * 2}px`);
@@ -100,11 +143,14 @@ function renderScene() {
 }
 function animateScene(phase, duration) {
     scenePhase = phase;
+    stage.classList.remove('discs-floating');
     phaseProgress = 0;
+    renderScene();
     return new Promise(resolve => {
         const start = performance.now();
         function frame(now) {
-            phaseProgress = Math.min(1, (now - start) / duration);
+            const elapsed = Math.min(1, (now - start) / duration);
+            phaseProgress = elapsed * elapsed * (3 - 2 * elapsed);
             renderScene();
             if (phaseProgress < 1) requestAnimationFrame(frame);
             else resolve();
@@ -140,9 +186,12 @@ async function chooseVideo() {
     stage.append(choicePanel);
     await animateScene('split', 900);
     scenePhase = 'choose';
+    stage.classList.add('discs-floating');
     renderScene();
     choicePanel.classList.add('choices-visible');
+    libraryBack.hidden = false;
     selectedIndex = await new Promise(resolve => {
+        cancelChoice = resolve;
         choicePanel.addEventListener('click', event => {
             const button = event.target.closest('button');
             if (!button || choicePanel.dataset.selected) return;
@@ -151,6 +200,14 @@ async function chooseVideo() {
             resolve(Number(button.dataset.index));
         });
     });
+    cancelChoice = null;
+    libraryBack.hidden = true;
+    if (selectedIndex === -1) {
+        choicePanel.remove();
+        secondDisc.remove();
+        openLibrary();
+        return false;
+    }
     const other = selectedIndex === 0 ? secondDisc : cdScene;
     if (selectedIndex === 1) cdScene = secondDisc;
     choicePanel.classList.remove('choices-visible');
@@ -163,6 +220,7 @@ async function chooseVideo() {
     await wait(500);
     choicePanel.remove();
     other.remove();
+    return true;
 }
 
 async function runSequence() {
@@ -183,26 +241,38 @@ async function runSequence() {
     await wait(1900);
     gift.classList.add('open');
     await wait(2700);
-    cdScene.classList.add('cd-visible');
-    await wait(6200);
-    // Detach these two layers from the camera that carries the gift offscreen.
+    openLibrary(true);
+}
+
+async function openLibrary(first = false) {
+    ready = false;
+    videoStarted = false;
+    changingDisc = false;
+    scenePhase = 'library';
+    libraryBack.hidden = true;
+    dedicationVideo.pause();
+    $('.indicator-light').classList.remove('disc-active');
+    $('.player-status').classList.remove('ready-active');
+    $('.play-hint').classList.remove('play-hint-active');
+    playerScene.classList.remove('player-ready');
+    ejectButton.disabled = true;
+    cdScene.style.opacity = '0';
+    playerScene.style.opacity = '0';
     stage.append(cdScene, playerScene);
     cdScene.classList.add('scene-managed');
     playerScene.classList.add('scene-managed');
-    stage.style.setProperty('--camera-travel', `${stage.clientHeight + gift.offsetHeight}px`);
-    $('.camera-content').style.transition = 'none';
-    stage.classList.add('camera-test');
-    await animateScene('travel', 4000);
+    libraryOrigin = await window.letterLibrary.open(first);
     gift.style.visibility = 'hidden';
-    await wait(2000);
-    await animateScene('appear', 1200);
+    cdScene.style.opacity = '1';
+    $('.camera-content').style.opacity = '0';
+    await animateScene('travel', 1200);
     await loadSelectedDisc();
 }
 
 async function loadSelectedDisc() {
     $('.play-hint').innerHTML = originalPlayHint;
     $('.player-play').disabled = false;
-    await chooseVideo();
+    if (!await chooseVideo()) return;
     await animateScene('insert', window.innerWidth <= 600 ? 2200 : 1500);
     await animateScene('settle', 1200);
     scenePhase = 'ready';
@@ -216,6 +286,7 @@ async function loadSelectedDisc() {
     ready = Boolean(videos[selectedIndex].src);
     changingDisc = false;
     ejectButton.disabled = false;
+    libraryBack.hidden = false;
     if (!ready) {
         $('.play-hint').textContent = 'Próximamente';
         $('.player-play').disabled = true;
@@ -225,6 +296,7 @@ async function loadSelectedDisc() {
 ejectButton.addEventListener('click', async () => {
     if (changingDisc || ejectButton.disabled) return;
     changingDisc = true;
+    libraryBack.hidden = true;
     ready = false;
     videoStarted = false;
     ejectButton.disabled = true;
