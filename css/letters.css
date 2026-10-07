@@ -143,3 +143,5 @@
 @keyframes letter-arrive { from { opacity:0; transform:translateY(18px); } to {opacity:1;transform:none;} }
 @media (max-height: 520px) { .library-home {padding-block: 24px;} .surprise-options {margin-top:16px;} .library-cd {width:90px;} .surprise-option > .envelope {width:110px;margin-block:8px;} .surprise-option {gap:12px;} .library-eyebrow {margin-bottom:8px;} .library-home h1 {margin-bottom:8px;} .letters-page {padding-top:70px;} }
 @media (prefers-reduced-motion: reduce) { .letter-library *, .letter-library *::before {animation: none !important; transition: none !important;} }
+
+.letter-photo { display: block; width: 100%; height: auto; margin: 28px auto 0; border: 5px solid #fff6e6; box-sizing: border-box; box-shadow: 0 4px 16px #49342130; }

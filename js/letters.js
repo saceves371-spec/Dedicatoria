@@ -176,6 +176,16 @@
             if (paragraph.length < 90) p.className = 'letter-emphasis';
             root.querySelector('.letter-copy').append(p);
         }
+        if (letter.photo) {
+            const photo = document.createElement('img');
+            photo.className = 'letter-photo';
+            photo.src = letter.photo.src;
+            photo.alt = letter.photo.alt;
+            photo.width = 1280;
+            photo.height = 960;
+            photo.loading = 'lazy';
+            root.querySelector('.letter-paper').append(photo);
+        }
         root.querySelectorAll('.letter-close, .reading-back').forEach(button => button.onclick = closeLetter);
         focusHeading();
     }
