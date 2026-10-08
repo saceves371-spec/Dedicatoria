@@ -151,3 +151,5 @@
 .letter-copy .letter-photo { margin-bottom: 30px; }
 
 .letter-illustration { display: block; width: 100%; height: auto; margin: 24px auto 30px; border: 0; background: transparent; }
+
+.letter-subtitle { display: block; margin-top: 8px; font: normal 15px/1.5 Georgia, serif; opacity: .8; }

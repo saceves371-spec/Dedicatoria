@@ -130,6 +130,13 @@
             card.className = 'letter-card';
             card.innerHTML = envelope + '<span class="letter-card-title"></span><span class="open-letter-label">Abrir carta</span>';
             card.querySelector('.letter-card-title').textContent = letter.date || letter.title;
+            if (letter.subtitle) {
+                const subtitle = document.createElement('small');
+                subtitle.className = 'letter-subtitle';
+                subtitle.textContent = letter.subtitle;
+                card.querySelector('.letter-card-title').append(subtitle);
+            }
+
             if (!letter.paragraphs?.length) {
                 card.disabled = true;
                 card.querySelector('.open-letter-label').textContent = 'Próximamente';
@@ -170,6 +177,13 @@
         if (token !== generation || root.hidden) return;
         render('<div class="letter-reading"><button type="button" class="letter-close" aria-label="Cerrar carta y volver a las cartas">×</button><article class="letter-paper"><p class="paper-eyebrow">UNA CARTA PARA TI</p><h2 tabindex="-1"></h2><div class="letter-rule">❦</div><div class="letter-copy"></div><span class="letter-end" aria-hidden="true">♡</span></article><button class="letter-back reading-back" type="button">‹ Volver a las cartas</button></div>');
         root.querySelector('h2').textContent = letter.title;
+        if (letter.subtitle) {
+            const subtitle = document.createElement('small');
+            subtitle.className = 'letter-subtitle';
+            subtitle.textContent = letter.subtitle;
+            root.querySelector('h2').append(subtitle);
+        }
+
         for (const [index, paragraph] of letter.paragraphs.entries()) {
             const p = document.createElement('p');
             p.textContent = paragraph;
