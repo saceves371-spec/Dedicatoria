@@ -170,11 +170,29 @@
         if (token !== generation || root.hidden) return;
         render('<div class="letter-reading"><button type="button" class="letter-close" aria-label="Cerrar carta y volver a las cartas">×</button><article class="letter-paper"><p class="paper-eyebrow">UNA CARTA PARA TI</p><h2 tabindex="-1"></h2><div class="letter-rule">❦</div><div class="letter-copy"></div><span class="letter-end" aria-hidden="true">♡</span></article><button class="letter-back reading-back" type="button">‹ Volver a las cartas</button></div>');
         root.querySelector('h2').textContent = letter.title;
-        for (const paragraph of letter.paragraphs) {
+        for (const [index, paragraph] of letter.paragraphs.entries()) {
             const p = document.createElement('p');
             p.textContent = paragraph;
             if (paragraph.length < 90) p.className = 'letter-emphasis';
             root.querySelector('.letter-copy').append(p);
+            for (const item of (letter.inserts || []).filter(item => item.after === index)) {
+                const element = document.createElement(item.type === 'link' ? 'a' : 'img');
+                if (item.type === 'link') {
+                    element.className = 'letter-song';
+                    element.href = item.href;
+                    element.textContent = item.label;
+                    element.target = '_blank';
+                    element.rel = 'noopener noreferrer';
+                } else {
+                    element.className = 'letter-photo';
+                    element.src = item.src;
+                    element.alt = item.alt;
+                    element.width = item.width;
+                    element.height = item.height;
+                    element.loading = 'lazy';
+                }
+                root.querySelector('.letter-copy').append(element);
+            }
         }
         if (letter.photo) {
             const photo = document.createElement('img');
