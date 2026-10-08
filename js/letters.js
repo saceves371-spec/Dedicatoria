@@ -184,7 +184,7 @@
                     element.target = '_blank';
                     element.rel = 'noopener noreferrer';
                 } else {
-                    element.className = 'letter-photo';
+                    element.className = item.illustration ? 'letter-illustration' : 'letter-photo';
                     element.src = item.src;
                     element.alt = item.alt;
                     element.width = item.width;
