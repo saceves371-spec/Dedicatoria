@@ -17,6 +17,8 @@
     function render(markup) {
         generation++;
         root.innerHTML = markup;
+        document.documentElement.classList.toggle('reading-letter', !!root.querySelector('.letter-reading'));
+        document.dispatchEvent(new Event('letter-view-change'));
         root.scrollTop = 0;
         opening = false;
     }
@@ -204,6 +206,7 @@
                     element.width = item.width;
                     element.height = item.height;
                     element.loading = 'lazy';
+                    element.decoding = 'async';
                 }
                 root.querySelector('.letter-copy').append(element);
             }
@@ -216,6 +219,7 @@
             photo.width = 1280;
             photo.height = 960;
             photo.loading = 'lazy';
+            photo.decoding = 'async';
             root.querySelector('.letter-paper').append(photo);
         }
         root.querySelectorAll('.letter-close, .reading-back').forEach(button => button.onclick = closeLetter);

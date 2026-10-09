@@ -438,6 +438,7 @@ videoProgress.addEventListener('pointermove', event => {
     const panels = [...document.querySelectorAll('.fingerprint-container, .verified-container, .rotate-content')];
     let pending;
     function fit() {
+        if (document.documentElement.classList.contains('reading-letter')) return;
         const width = document.documentElement.clientWidth;
         const height = window.visualViewport?.height || window.innerHeight;
         document.documentElement.style.setProperty('--viewport-height', `${height}px`);
@@ -455,6 +456,7 @@ videoProgress.addEventListener('pointermove', event => {
     function schedule() { cancelAnimationFrame(pending); pending = requestAnimationFrame(fit); }
     window.addEventListener('resize', schedule);
     window.visualViewport?.addEventListener('resize', schedule);
+    document.addEventListener('letter-view-change', schedule);
     const observer = new ResizeObserver(schedule);
     panels.forEach(panel => observer.observe(panel));
     schedule();
