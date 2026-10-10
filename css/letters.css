@@ -160,3 +160,5 @@
 @media (hover: none) and (pointer: coarse) {
     .reading-letter .letter-paper { animation: none; box-shadow: 0 8px 22px #0005; }
 }
+
+.letter-copy .letter-centered-italic { text-align: center; font-style: italic; margin-block: 30px; }

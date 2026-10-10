@@ -190,6 +190,7 @@
             const p = document.createElement('p');
             p.textContent = paragraph;
             if (paragraph.length < 90) p.className = 'letter-emphasis';
+            if (letter.centeredItalicParagraphs?.includes(index)) p.classList.add('letter-centered-italic');
             root.querySelector('.letter-copy').append(p);
             for (const item of (letter.inserts || []).filter(item => item.after === index)) {
                 const element = document.createElement(item.type === 'link' ? 'a' : 'img');
