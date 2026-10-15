@@ -162,3 +162,5 @@
 }
 
 .letter-copy .letter-centered-italic { text-align: center; font-style: italic; margin-block: 30px; }
+
+.letter-copy p { white-space: pre-line; }
